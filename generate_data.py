@@ -21,12 +21,13 @@ from utils.gen import chat_change_with_answer
 from tqdm import tqdm
 import json
 import spacy
+from spacy.cli import download
 
 model, tokenizer, generation_config, at_id = get_model(model_type, model_family, 1)
 
-
+print (output_path)
 if not os.path.exists(output_path):
-    os.mkdir(output_path)
+    os.makedirs(output_path, exist_ok=True)
 
 
 if "llama" in model_family or "baichuan" in model_family:
@@ -34,7 +35,7 @@ if "llama" in model_family or "baichuan" in model_family:
 else:
     st = "Ġ"
     
-    
+download("en_core_web_sm")    
 nlp = spacy.load('en_core_web_sm')
 prompt_chat = []
 
