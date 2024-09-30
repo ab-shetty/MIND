@@ -9,7 +9,7 @@ def get_model(model_type, model_family, max_new_tokens=1):
             model_path = "facebook/opt-13b"
         at_id = [787, 1039]
     elif model_family == "llamabase":
-        model_path = f"meta-llama/Llama-2-{model_type}-hf"
+        model_path = f"NousResearch/Llama-2-{model_type}-hf"
     elif model_family == "bloom":
         model_path = "bigscience/bloom-7b1"
         at_id = [2566, 35]
