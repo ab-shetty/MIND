@@ -4,6 +4,8 @@ import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "7"
 model_type = "7b"
 model_family = "llamabase"
+model_type = "1b"
+model_family = "llama"
 
 wiki_path = "./auto-labeled/wiki"
 output_path = f"./auto-labeled/output/{model_family}{model_type}"
@@ -83,6 +85,8 @@ def get_entities(text):
 def find_first_and_next_token(text, e, idx, input_id, prompt=""):
     new_text = f"{text[:idx].strip()} {text[idx:].replace(e, e + ' @', 1).strip()}" 
     new_input_id = tokenizer(prompt + new_text.strip(), return_tensors='pt')['input_ids'].tolist()[0]
+    #print (new_text)
+    #print (new_input_id)
     for i in range(len(input_id[0])):
         if input_id[0][i] != new_input_id[i]:
             return []

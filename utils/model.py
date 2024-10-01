@@ -10,6 +10,8 @@ def get_model(model_type, model_family, max_new_tokens=1):
         at_id = [787, 1039]
     elif model_family == "llamabase":
         model_path = f"NousResearch/Llama-2-{model_type}-hf"
+    elif model_family == "llama":
+        model_path = f"NousResearch/Llama-3.2-1B"
     elif model_family == "bloom":
         model_path = "bigscience/bloom-7b1"
         at_id = [2566, 35]
@@ -35,8 +37,8 @@ def get_model(model_type, model_family, max_new_tokens=1):
             torch_dtype=torch.float32,
             low_cpu_mem_usage=True,
             device_map='auto')
-        tokenizer = LlamaTokenizer.from_pretrained(model_path)
-        at_id = 732
+        tokenizer = AutoTokenizer.from_pretrained(model_path)
+        at_id = 571
     elif "baichuan" in model_family:
         tokenizer = AutoTokenizer.from_pretrained(model_path, padding_side="left", trust_remote_code=True)
         tokenizer.pad_token_id = 0 if tokenizer.pad_token_id is None else tokenizer.pad_token_id # set as the <unk> token
