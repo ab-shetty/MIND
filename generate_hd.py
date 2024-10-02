@@ -1,9 +1,11 @@
 import os
 
 # --------------------------------------------- #
-os.environ["CUDA_VISIBLE_DEVICES"] = "7"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 model_type = "7b"
 model_family = "llamabase"
+model_type = "1b"
+model_family = "llama"
 result_path = f"./auto-labeled/output/{model_family}{model_type}"
 # --------------------------------------------- #
 

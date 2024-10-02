@@ -62,7 +62,14 @@ def get_data(root_path, data_model, hd_model, type_="train"):
 class Model():
     def __init__(self, args, path=None):
         self.args = args
-        input_size = (4096*2 if "falcon" not in args.model_name else 4544*2) if "7b" in args.model_name else (5120*2 if "13b" in args.model_name else 8192*2)
+        if "7b" in args.model_name:
+            input_size = 4096 * 2 if "falcon" not in args.model_name else 4544 * 2
+        elif "13b" in args.model_name:
+            input_size = 5120 * 2
+        elif "1b" in args.model_name:
+            input_size = 4096
+        else:
+            input_size = 8192 * 2
         self.model = nn.Sequential()
         self.model.add_module("dropout", nn.Dropout(args.dropout))
         self.model.add_module(f"linear1", nn.Linear(input_size, 256))
@@ -88,7 +95,7 @@ class Model():
         now = datetime.datetime.now()
         prefix = f"{self.args.output_path}/{self.args.model_name}/train_log/"
         if not os.path.exists(prefix):
-            os.mkdir(prefix)
+            os.makedirs(prefix, exist_ok=True)
         epoch, epoch_start = self.args.train_epoch, 1
         
         
@@ -177,15 +184,15 @@ class Model():
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--model_name", type=str, default="llamabase7b")
-    parser.add_argument("--output_path", default="../auto-labeled/output", type=str)
-    parser.add_argument("--data_path", default="../auto-labeled/output", type=str)
+    parser.add_argument("--output_path", default="./auto-labeled/output", type=str)
+    parser.add_argument("--data_path", default="./auto-labeled/output", type=str)
 
     parser.add_argument("--train_epoch", default=20, type=int)
     parser.add_argument("--batch_size", default=32, type=int)
     parser.add_argument("--lr", default=5e-4, type=float)
     parser.add_argument("--wd", default=1e-5, type=float)
     parser.add_argument("--dropout", default=0.2, type=float)
-    parser.add_argument("--device", default="cuda:7", type=str)
+    parser.add_argument("--device", default="cuda:0", type=str)
     
     args = parser.parse_args()
 

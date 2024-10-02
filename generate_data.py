@@ -1,7 +1,7 @@
 import os
 
 # --------------------------------------------- #
-os.environ["CUDA_VISIBLE_DEVICES"] = "7"
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 model_type = "7b"
 model_family = "llamabase"
 model_type = "1b"
@@ -27,7 +27,6 @@ from spacy.cli import download
 
 model, tokenizer, generation_config, at_id = get_model(model_type, model_family, 1)
 
-print (output_path)
 if not os.path.exists(output_path):
     os.makedirs(output_path, exist_ok=True)
 

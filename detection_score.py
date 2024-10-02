@@ -30,7 +30,8 @@ class Model():
         self.model.add_module(f"linear3", nn.Linear(128, 64))
         self.model.add_module(f"relu3", nn.ReLU())
         self.model.add_module(f"linear4", nn.Linear(64, 2))
-        self.device = "cuda:0"
+        # self.device = "cuda:0"
+        self.device = "cpu"
         self.model.load_state_dict(torch.load(path, map_location = "cpu")["model_state_dict"])
         self.model.to(self.device)
         self.model.eval()
@@ -48,6 +49,7 @@ class Model():
 root_path = f"./{task_name}"
 model = os.listdir(root_path + "/hd")
 model = sorted(model)
+model = ["llama1b"]
 
 result_sent_halu = {"Our_score": {}}
 result_psg_corr = {"Our_score": {}}
@@ -56,7 +58,14 @@ result_sent_corr = {"Our_score": {}}
 
 for mo in tqdm(model):
     ckpt_path = f"./auto-labeled/output/{mo}/train_log/best_acc_model.pt"
-    input_size = (4096*2 if "falcon" not in mo else 4544*2) if "7b" in mo else (5120*2 if "13b" in mo else 8192*2)
+    if "7b" in mo:
+        input_size = 4096 * 2 if "falcon" not in mo else 4544 * 2
+    elif "13b" in mo:
+        input_size = 5120 * 2
+    elif "1b" in mo:
+        input_size = 4096
+    else:
+        input_size = 8192 * 2
     mlp = Model(input_size, ckpt_path)
 
 
